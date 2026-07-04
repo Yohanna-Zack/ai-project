@@ -1,0 +1,36 @@
+# OS generated files
+# Ignore macOS Finder and Windows thumbnail/system files.
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# VS Code workspace settings
+# Ignore editor-specific workspace config and local settings.
+.vscode/
+*.code-workspace
+
+# Dependencies
+# Ignore installed packages and package manager logs.
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+# Ignore local environment variables and secrets.
+.env
+.env.*
+!.env.example
+
+# Build and cache folders
+# Ignore local build output and caches created by tooling.
+dist/
+build/
+.cache/
+.parcel-cache/
