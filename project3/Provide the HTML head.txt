@@ -1,0 +1,114 @@
+`"Provide the HTML <head> metadata for a modern e-commerce product page selling a custom mechanical keyboard. Include:
+
+Standard SEO tags (Title, Description, Robots).
+Open Graph (OG) meta tags for Facebook/LinkedIn preview sharing (title, description, image, URL, type).
+Twitter Card metadata.
+Structured Schema.org microdata in JSON-LD format showing a product offer (Name, Price: $149.99, Currency: USD, Availability: InStock).
+Return ONLY the head tags inside an HTML block."`
+
+
+-----------------------------------------
+
+<section class="carousel-container">
+    <div class="carousel-slides">
+        <div class="slide active">
+            <img src="https://picsum.photos/id/10/800/400" alt="Mountain Landscape">
+        </div>
+        <div class="slide">
+            <img src="https://picsum.photos/id/20/800/400" alt="Office Setup">
+        </div>
+        <div class="slide">
+            <img src="https://picsum.photos/id/30/800/400" alt="Keyboards and Gadgets">
+        </div>
+    </div>
+
+    <!-- Carousel Controls -->
+    <button class="carousel-btn prev-btn" id="prevBtn">&#10094;</button>
+    <button class="carousel-btn next-btn" id="nextBtn">&#10095;</button>
+</section>
+
+---------------------------------------
+
+.carousel-container {
+    position: relative;
+    max-width: 800px;
+    margin: 2rem auto;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.carousel-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    display: none; /* We will toggle display using JS active class */
+}
+
+.slide.active {
+    display: block;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.carousel-btn:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+.prev-btn { left: 10px; }
+.next-btn { right: 10px; }
+
+----------------------------------
+
+"Write a modular, clean ES6 vanilla JavaScript module to power an image carousel. The script should:
+
+Target the slide elements using 'slide' class and active transition state.
+Implement event listeners for both the 'Prev' and 'Next' buttons.
+Keep track of the current slide index.
+Create an updateCarousel() function that handles updating the visual DOM state.
+Ensure that when reaching the last slide, clicking 'Next' wraps around to index 0, and clicking 'Prev' at index 0 wraps to the last slide.
+Do not use any libraries or frameworks. Provide clean, commented JavaScript code."`
+
+---------------------------
+
+document.addEventListener("DOMContentLoaded", () => {
+    const slides = document.querySelectorAll(".slide");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    let currentIndex = 0;
+
+    function updateCarousel() {
+        slides.forEach((slide, index) => {
+            if (index === currentIndex) {
+                slide.classList.add("active");
+            } else {
+                slide.classList.remove("active");
+            }
+        });
+    }
+
+    nextBtn.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % slides.length; // Modular Wrap Logic
+        updateCarousel();
+    });
+
+    prevBtn.addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length; // Negative wrap correction
+        updateCarousel();
+    });
+});

@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Services — DataMind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #050d1a;
+  --navy-2: #0a1628;
+  --navy-3: #0f1f38;
+  --navy-4: #162847;
+  --cyan: #00e5ff;
+  --cyan-dim: rgba(0,229,255,0.15);
+  --cyan-glow: rgba(0,229,255,0.35);
+  --teal: #00b4d8;
+  --accent: #7df9ff;
+  --white: #e8f4fd;
+  --white-dim: rgba(232,244,253,0.6);
+  --white-faint: rgba(232,244,253,0.08);
+  --glass: rgba(15,31,56,0.65);
+  --glass-border: rgba(0,229,255,0.18);
+  --shadow-cyan: 0 0 40px rgba(0,229,255,0.12);
+  --shadow-lg: 0 24px 64px rgba(0,0,0,0.6);
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --radius: 16px;
+  --radius-sm: 8px;
+  --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--navy);
+  color: var(--white);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+.bg-gradient {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(0,180,216,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 80% 70%, rgba(0,229,255,0.05) 0%, transparent 60%);
+}
+
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 0 5%;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 70px;
+  transition: var(--transition);
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-cyan);
+}
+.nav-logo {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo span { color: var(--cyan); }
+.logo-dot {
+  width: 8px; height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 12px var(--cyan);
+  animation: pulse 2s ease-in-out infinite;
+}
+.nav-links { display: flex; align-items: center; gap: 36px; }
+.nav-links a {
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: var(--white-dim);
+  position: relative;
+  transition: color var(--transition);
+  text-transform: uppercase;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--cyan);
+  transition: width var(--transition);
+  box-shadow: 0 0 8px var(--cyan);
+}
+.nav-links a:hover, .nav-links a.active { color: var(--white); }
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+.nav-cta {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--cyan) !important;
+  padding: 8px 20px;
+  border-radius: 50px;
+  transition: var(--transition) !important;
+  font-weight: 600 !important;
+}
+.nav-cta:hover {
+  background: var(--cyan-dim) !important;
+  border-color: var(--cyan) !important;
+  box-shadow: 0 0 20px var(--cyan-glow) !important;
+}
+.nav-cta::after { display: none !important; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.hamburger span {
+  width: 24px; height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+.mobile-menu {
+  display: none;
+  position: fixed; top: 70px; left: 0; right: 0;
+  background: var(--navy-2);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px);
+  padding: 24px 5%;
+  flex-direction: column; gap: 20px;
+  z-index: 999;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: 1rem; font-weight: 500;
+  color: var(--white-dim);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--white-faint);
+  transition: color var(--transition);
+}
+.mobile-menu a:hover { color: var(--cyan); }
+
+.page-hero {
+  padding: 140px 5% 80px;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.page-hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--glass-border);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--cyan);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.page-hero h1 {
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -2px;
+  margin-bottom: 16px;
+}
+.page-hero h1 span { color: var(--cyan); }
+.page-hero p {
+  font-size: 1rem;
+  color: var(--white-dim);
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.section-label {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--cyan); font-weight: 600;
+  margin-bottom: 12px;
+}
+.section-label::before {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+}
+.section-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.section-title span { color: var(--cyan); }
+.section-desc {
+  font-size: 0.95rem;
+  color: var(--white-dim);
+  max-width: 700px;
+  line-height: 1.8;
+}
+
+.services-overview {
+  padding: 0 5% 60px;
+  position: relative;
+  z-index: 1;
+}
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+  margin-top: 30px;
+}
+.overview-copy {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+.overview-copy p {
+  color: var(--white-dim);
+  line-height: 1.85;
+  margin-bottom: 16px;
+}
+.overview-benefits {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 24px;
+}
+.benefit-chip {
+  padding: 12px 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  background: var(--cyan-dim);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.overview-panel {
+  background: linear-gradient(135deg, rgba(15,31,56,0.9), rgba(22,40,71,0.8));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+.panel-metric {
+  display: flex; justify-content: space-between; gap: 16px;
+  padding: 12px 0; border-bottom: 1px solid var(--white-faint);
+  color: var(--white-dim);
+  font-size: 0.9rem;
+}
+.panel-metric:last-child { border-bottom: none; }
+.panel-metric strong { color: var(--white); }
+
+.services-grid {
+  padding: 0 5% 80px;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.service-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.service-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  transform: scaleX(0);
+  transition: var(--transition);
+}
+.service-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--cyan-dim);
+  box-shadow: var(--shadow-cyan);
+}
+.service-card:hover::after { transform: scaleX(1); }
+.service-icon {
+  width: 54px; height: 54px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  transition: var(--transition);
+}
+.service-card:hover .service-icon {
+  background: var(--cyan);
+  box-shadow: 0 0 24px var(--cyan-glow);
+}
+.service-title {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.service-desc {
+  font-size: 0.85rem;
+  color: var(--white-dim);
+  line-height: 1.8;
+}
+.service-details {
+  display: flex; flex-wrap: wrap;
+  gap: 10px; margin-top: 18px;
+}
+.service-details span {
+  font-size: 0.72rem;
+  padding: 6px 12px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.process-section {
+  padding: 0 5% 80px;
+  position: relative;
+  z-index: 1;
+}
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 32px;
+}
+.process-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+.process-step {
+  font-size: 0.72rem;
+  color: var(--cyan);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.process-card h3 {
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.process-card p {
+  font-size: 0.85rem;
+  color: var(--white-dim);
+  line-height: 1.8;
+}
+
+.packages-section {
+  padding: 0 5% 80px;
+  position: relative;
+  z-index: 1;
+}
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 34px;
+}
+.package-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 28px;
+  transition: var(--transition);
+}
+.package-card.featured {
+  border-color: var(--cyan);
+  box-shadow: var(--shadow-cyan);
+  transform: translateY(-4px);
+}
+.package-name {
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.package-price {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--cyan);
+  margin: 12px 0 16px;
+}
+.package-card p {
+  color: var(--white-dim);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  margin-bottom: 18px;
+}
+.package-list { display: flex; flex-direction: column; gap: 10px; }
+.package-list li {
+  display: flex; align-items: flex-start;
+  gap: 10px;
+  color: var(--white-dim);
+  font-size: 0.86rem;
+}
+.package-list li::before {
+  content: '•';
+  color: var(--cyan);
+  font-weight: 800;
+}
+
+.cta-section {
+  padding: 0 5% 100px;
+  position: relative;
+  z-index: 1;
+}
+.cta-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  background: linear-gradient(135deg, rgba(15,31,56,0.92), rgba(5,13,26,0.9));
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.cta-inner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0,229,255,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cta-inner h2 {
+  font-family: var(--font-head);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 14px;
+}
+.cta-inner p {
+  color: var(--white-dim);
+  line-height: 1.8;
+  margin-bottom: 28px;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cta-btns {
+  display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--cyan);
+  color: var(--navy);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 13px 28px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--cyan-glow); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 13px 28px;
+  border-radius: 50px;
+  border: 1px solid var(--glass-border);
+  transition: var(--transition);
+  text-transform: uppercase;
+}
+.btn-secondary:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: var(--cyan-dim);
+}
+
+footer {
+  background: var(--navy-2);
+  border-top: 1px solid var(--glass-border);
+  padding: 60px 5% 32px;
+  position: relative;
+  z-index: 1;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px; margin-bottom: 48px;
+}
+.footer-brand p {
+  font-size: 0.85rem;
+  color: var(--white-dim);
+  line-height: 1.8;
+  margin-top: 16px;
+  max-width: 280px;
+}
+.footer-social {
+  display: flex; gap: 12px; margin-top: 20px;
+}
+.social-btn {
+  width: 38px; height: 38px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  cursor: pointer;
+  color: var(--white-dim);
+}
+.social-btn:hover {
+  background: var(--cyan);
+  color: var(--navy);
+  border-color: var(--cyan);
+  box-shadow: 0 0 16px var(--cyan-glow);
+}
+.footer-col h4 {
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+.footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul li a {
+  font-size: 0.83rem;
+  color: var(--white-dim);
+  transition: color var(--transition);
+}
+.footer-col ul li a:hover { color: var(--cyan); }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 32px; border-top: 1px solid var(--white-faint);
+  font-size: 0.8rem; color: var(--white-dim);
+}
+.back-to-top {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 0.78rem;
+  color: var(--white-dim);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.back-to-top:hover { color: var(--cyan); border-color: var(--cyan); }
+
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
+
+@media (max-width: 1024px) {
+  .overview-grid, .services-grid, .process-grid, .packages-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .overview-grid, .services-grid, .process-grid, .packages-grid { grid-template-columns: 1fr; }
+  .overview-benefits { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+}
+</style>
+</head>
+<body>
+<div class="bg-gradient"></div>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo"><span class="logo-dot"></span>Data<span>Mind</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="services.html" class="active">Services</a></li>
+    <li><a href="contact.html" class="nav-cta">Hire Me</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="projects.html">Projects</a>
+  <a href="services.html">Services</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section class="page-hero">
+  <div class="page-hero-tag">Services</div>
+  <h1>Analytics support built for <span>clarity and growth</span></h1>
+  <p>From data cleanup to executive reporting, I help teams turn messy data into reliable insights, actionable dashboards, and measurable business outcomes.</p>
+</section>
+
+<section class="services-overview">
+  <div class="reveal">
+    <div class="section-label">What you can expect</div>
+    <h2 class="section-title">A practical, end-to-end approach to <span>data delivery</span></h2>
+  </div>
+  <div class="overview-grid">
+    <div class="overview-copy reveal" style="transition-delay:0.05s">
+      <p>I work with growing teams that need clearer reporting, cleaner data, and better decision support without adding unnecessary complexity. Every engagement is tailored to your environment, timelines, and stakeholders.</p>
+      <p>Whether you need a one-off turnaround project or an ongoing analytics partner, I blend technical rigor with business communication so insights are both accurate and easy to act on.</p>
+      <div class="overview-benefits">
+        <div class="benefit-chip">Faster reporting cycles</div>
+        <div class="benefit-chip">Cleaner, trusted datasets</div>
+        <div class="benefit-chip">Dashboard adoption across teams</div>
+        <div class="benefit-chip">Executive-ready storytelling</div>
+      </div>
+    </div>
+    <div class="overview-panel reveal" style="transition-delay:0.1s">
+      <div class="section-label">Typical outcomes</div>
+      <div class="panel-metric"><span>Dashboard build time</span><strong>Reduced by 60%</strong></div>
+      <div class="panel-metric"><span>Manual reporting hours</span><strong>Saved weekly</strong></div>
+      <div class="panel-metric"><span>Data quality issues found</span><strong>Audited and resolved</strong></div>
+      <div class="panel-metric"><span>Stakeholder visibility</span><strong>Improved across teams</strong></div>
+      <div class="panel-metric"><span>Decision speed</span><strong>Faster with clearer reporting</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="services-grid" aria-label="Services">
+  <div class="service-card reveal">
+    <div class="service-icon">🔍</div>
+    <div class="service-title">Data Cleaning & Prep</div>
+    <p class="service-desc">Transform messy, inconsistent datasets into reliable inputs for reporting, forecasting, and analysis.</p>
+    <div class="service-details"><span>SQL</span><span>Excel</span><span>Power Query</span></div>
+  </div>
+  <div class="service-card reveal" style="transition-delay:0.05s">
+    <div class="service-icon">📊</div>
+    <div class="service-title">Business Intelligence</div>
+    <p class="service-desc">Create dashboards and reporting layers that help leaders and teams monitor KPIs in real time.</p>
+    <div class="service-details"><span>Power BI</span><span>Tableau</span><span>DAX</span></div>
+  </div>
+  <div class="service-card reveal" style="transition-delay:0.1s">
+    <div class="service-icon">🔮</div>
+    <div class="service-title">Predictive Analytics</div>
+    <p class="service-desc">Build models that forecast revenue, churn, demand, and operational risk using statistical and ML methods.</p>
+    <div class="service-details"><span>Python</span><span>Scikit-learn</span><span>Time series</span></div>
+  </div>
+  <div class="service-card reveal" style="transition-delay:0.15s">
+    <div class="service-icon">📋</div>
+    <div class="service-title">Excel Automation</div>
+    <p class="service-desc">Reduce manual work with macros, workflow automation, and reusable reporting templates.</p>
+    <div class="service-details"><span>VBA</span><span>Power Query</span><span>Automation</span></div>
+  </div>
+  <div class="service-card reveal" style="transition-delay:0.2s">
+    <div class="service-icon">🎨</div>
+    <div class="service-title">Data Visualization</div>
+    <p class="service-desc">Design visuals that communicate trends, comparisons, and recommendations clearly to non-technical stakeholders.</p>
+    <div class="service-details"><span>Storytelling</span><span>Dashboards</span><span>Executive reports</span></div>
+  </div>
+  <div class="service-card reveal" style="transition-delay:0.25s">
+    <div class="service-icon">🤖</div>
+    <div class="service-title">AI-Powered Insights</div>
+    <p class="service-desc">Use AI tools and NLP workflows to uncover patterns, summarize insights, and accelerate decision-making.</p>
+    <div class="service-details"><span>NLP</span><span>AI tools</span><span>Insights</span></div>
+  </div>
+</section>
+
+<section class="process-section">
+  <div class="reveal">
+    <div class="section-label">How I work</div>
+    <h2 class="section-title">A clean process from <span>discovery to delivery</span></h2>
+    <p class="section-desc">Each engagement is structured to minimize friction, align stakeholders, and deliver a usable outcome quickly.</p>
+  </div>
+  <div class="process-grid">
+    <div class="process-card reveal">
+      <div class="process-step">01</div>
+      <h3>Discover the business question</h3>
+      <p>Define what matters most, identify the data sources, and align on outcomes, metrics, and timelines.</p>
+    </div>
+    <div class="process-card reveal" style="transition-delay:0.05s">
+      <div class="process-step">02</div>
+      <h3>Build the data foundation</h3>
+      <p>Clean, model, and prepare the data so reporting and analysis are reliable, repeatable, and easy to maintain.</p>
+    </div>
+    <div class="process-card reveal" style="transition-delay:0.1s">
+      <div class="process-step">03</div>
+      <h3>Deliver insights and enable adoption</h3>
+      <p>Package the outputs into dashboards, recaps, and workflows that stakeholders can use confidently from day one.</p>
+    </div>
+  </div>
+</section>
+
+<section class="packages-section">
+  <div class="reveal">
+    <div class="section-label">Engagement options</div>
+    <h2 class="section-title">Flexible packages for <span>different needs</span></h2>
+  </div>
+  <div class="packages-grid">
+    <div class="package-card reveal">
+      <div class="package-name">Quick Win</div>
+      <div class="package-price">$1.5k</div>
+      <p>Perfect for a focused data cleanup or dashboard refresh with fast turnaround and clear deliverables.</p>
+      <ul class="package-list">
+        <li>1–2 week sprint</li>
+        <li>Priority KPI review</li>
+        <li>Actionable dashboard or report</li>
+      </ul>
+    </div>
+    <div class="package-card featured reveal" style="transition-delay:0.05s">
+      <div class="package-name">Growth Partner</div>
+      <div class="package-price">$4k</div>
+      <p>Best for a broader analytics project that combines reporting, modeling, and stakeholder enablement.</p>
+      <ul class="package-list">
+        <li>4–6 week engagement</li>
+        <li>Custom dashboards and metrics</li>
+        <li>Training and documentation</li>
+      </ul>
+    </div>
+    <div class="package-card reveal" style="transition-delay:0.1s">
+      <div class="package-name">Ongoing Support</div>
+      <div class="package-price">Custom</div>
+      <p>Ideal for teams that need a repeatable analytics partner for reporting, insights, and continuous optimization.</p>
+      <ul class="package-list">
+        <li>Monthly or sprint-based support</li>
+        <li>Priority responsiveness</li>
+        <li>Roadmap planning and reporting cadence</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <div class="section-label">Ready to talk</div>
+    <h2>Let’s turn your data into a stronger next step</h2>
+    <p>If you need cleaner reporting, better dashboards, or a focused analytics project, I can help scope the right approach and timeline.</p>
+    <div class="cta-btns">
+      <a href="mailto:alex@datamind.io" class="btn-primary">Start a conversation</a>
+      <a href="projects.html" class="btn-secondary">Browse projects</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo"><span class="logo-dot"></span>Data<span style="color:var(--cyan)">Mind</span></div>
+      <p>Turning data chaos into strategic clarity.</p>
+      <div class="footer-social">
+        <a class="social-btn" href="#">in</a>
+        <a class="social-btn" href="#">⌥</a>
+        <a class="social-btn" href="#">𝕏</a>
+        <a class="social-btn" href="#">✉</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project Types</h4>
+      <ul>
+        <li><a href="#">Power BI</a></li>
+        <li><a href="#">Python ML</a></li>
+        <li><a href="#">SQL Analytics</a></li>
+        <li><a href="#">Excel</a></li>
+        <li><a href="#">AI Analytics</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:alex@datamind.io">alex@datamind.io</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 DataMind — Alex Rivera. All rights reserved.</span>
+    <a class="back-to-top" href="#">⬆ Back to Top</a>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach((item) => observer.observe(item));
+</script>
+</body>
+</html>

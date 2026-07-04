@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renewable Energy Solutions Portfolio</title>
+    <style>
+        :root {
+            --primary: #f9d923;
+            --secondary: #1e3a34;
+            --accent: #3aafa9;
+            --light: #f4f4f4;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--light);
+            color: var(--secondary);
+        }
+        header {
+            background: var(--secondary);
+            color: #fff;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+        }
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .logo-text {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: var(--primary);
+        }
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            text-align: left;
+            padding-top: 7rem;
+            min-height: 100vh;
+            background: var(--light);
+            gap: 2rem;
+        }
+        .hero-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .hero-image {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-image img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px #0002;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--secondary);
+            font-weight: 700;
+            text-shadow: 2px 2px 8px #1e3a34cc;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            color: #12261f;
+            margin: 1rem 0 2rem 0;
+            text-shadow: 1px 1px 6px #1e3a34cc;
+        }
+        h2,
+        h3 {
+            color: #12261f;
+            font-weight: 700;
+        }
+        /* Subtitle background styling */
+        .subtitle,
+        .section-subtitle,
+        .eyebrow {
+            display: inline-block;
+            background: linear-gradient(90deg, rgba(58,175,169,0.12), rgba(249,217,35,0.12));
+            padding: 0.18rem 0.6rem;
+            border-radius: 999px;
+            font-weight: 700;
+            color: inherit;
+            margin-bottom: 0.6rem;
+        }
+        .btn {
+            background: var(--accent);
+            color: #fff;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+        section {
+            padding: 4rem 1rem 2rem 1rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .works {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .work-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #0001;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .work-card:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+        .work-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .work-card h3 {
+            margin: 1rem;
+            font-size: 1.2rem;
+        }
+        .work-card p {
+            margin: 0 1rem 1rem 1rem;
+            font-size: 1rem;
+        }
+        footer {
+            background: var(--secondary);
+            color: #fff;
+            text-align: center;
+            padding: 2rem 1rem 1rem 1rem;
+        }
+        .social-links a {
+            margin: 0 0.5rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .social-links a:hover {
+            color: var(--accent);
+        }
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 6rem;
+            }
+            .hero-content, .hero-image {
+                width: 100%;
+                max-width: 100%;
+            }
+            .hero-image img {
+                max-width: 90vw;
+            }
+        }
+        @media (max-width: 700px) {
+            .header-container {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0 0.5rem;
+            }
+            nav {
+                gap: 1rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            section {
+                padding: 2rem 0.5rem 1rem 0.5rem;
+            }
+        }
+    </style>
+    <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-text">Solar Solutions Co.</div>
+            <nav>
+                <a href="#hero">Home</a>
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#work">Previous Work</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <span class="eyebrow">Professional advisory services</span>
+            <h1>Solar Solutions Co.</h1>
+            <p>Empowering your world with clean, renewable solar energy.</p>
+            <a href="#contact" class="btn">Get in Touch</a>
+        </div>
+        <div class="hero-image">
+            <img src="solar_panel1.jpg" alt="Solar Panels">
+        </div>
+    </section>
+    <section id="about">
+        <h2>About Us</h2>
+        <p>
+            Solar Solutions Co. is dedicated to providing innovative and sustainable solar energy solutions for homes and businesses. 
+            Our team of experts ensures seamless installation and maintenance, helping you save on energy costs while protecting the environment.
+        </p>
+    </section>
+    <section id="services">
+        <h2 style="color: #0b2622; font-weight: 700;">Our Services</h2>
+        <div class="works">
+            <div class="work-card">
+                <img src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=600&q=80" alt="Solar Panel Installation">
+                <h3>Solar Panel Installation</h3>
+                <p>Professional installation of high-efficiency solar panels for homes and businesses.</p>
+            </div>
+            <div class="work-card">
+                <img src="product1.jpg">
+                <h3>Solar Products</h3>
+                <p>Wide range of solar products including inverters, batteries, and smart monitoring systems.</p>
+            </div>
+            <div class="work-card">
+                <img src="maintenance1.jpg"Solar Services">
+                <h3>Maintenance & Support</h3>
+                <p>Comprehensive maintenance and support services to ensure optimal performance.</p>
+            </div>
+        </div>
+    </section>
+    <section id="work">
+        <h2>Previous Work</h2>
+        <div class="works">
+            <div class="work-card">
+                <img src="roof_top1.jpg">
+                <h3>Residential Rooftop</h3>
+                <p>Installed a 5kW solar system for a family home, reducing their energy bills by 60%.</p>
+            </div>
+            <div class="work-card">
+                <img src="commproject1.jpg">
+                <h3>Commercial Project</h3>
+                <p>Delivered a 50kW solar solution for a local business, powering their operations sustainably.</p>
+            </div>
+            <div class="work-card">
+                <img src="productshowcase.jpg"Solar Product Showcase">
+                <h3>Solar Product Showcase</h3>
+                <p>Showcased our latest solar products at the Green Energy Expo 2025.</p>
+            </div>
+            <div class="work-card">
+                <img src="serv_maintenance.jpg"alt="Solar Services Team">
+                <h3> Our Service & Maintenance</h3>
+                <p>Provided ongoing maintenance and support for over 100+ solar installations.</p>
+            </div>
+        </div>
+    </section>
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>Email: <a href="mailto:keyimpactkonsult@gmail.com">info@solarsolutions.com</a></p>
+        <p>Phone: <a href="tel:+2348062332363">+8050338706</a></p>
+        <p>Address: 123 Solar Ave, Green City, Earth</p>
+    </section>
+    <footer>
+        <p>&copy; 2026 Solar Solutions Co. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://facebook.com/" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://twitter.com/" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://linkedin.com/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </footer>
+</body>
+</html>

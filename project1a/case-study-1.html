@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Case Study — Sales Dashboard | DataMind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#050d1a;--navy-2:#0a1628;--navy-3:#0f1f38;--navy-4:#162847;--cyan:#00e5ff;--cyan-dim:rgba(0,229,255,0.15);--cyan-glow:rgba(0,229,255,0.35);--teal:#00b4d8;--accent:#7df9ff;--white:#e8f4fd;--white-dim:rgba(232,244,253,0.6);--white-faint:rgba(232,244,253,0.08);--glass:rgba(15,31,56,0.65);--glass-border:rgba(0,229,255,0.18);--shadow-cyan:0 0 40px rgba(0,229,255,0.12);--shadow-lg:0 24px 64px rgba(0,0,0,0.6);--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--radius:16px;--radius-sm:8px;--transition:0.35s cubic-bezier(0.4,0,0.2,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--navy);color:var(--white);overflow-x:hidden;line-height:1.6}
+a{text-decoration:none;color:inherit}ul{list-style:none}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--navy)}::-webkit-scrollbar-thumb{background:var(--cyan-dim);border-radius:3px}
+.bg-gradient{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 20% 30%,rgba(0,180,216,0.07) 0%,transparent 60%)}
+
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:70px;background:var(--glass);backdrop-filter:blur(24px);border-bottom:1px solid var(--glass-border);box-shadow:var(--shadow-cyan)}
+.nav-logo{font-family:var(--font-head);font-size:1.4rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.nav-logo span{color:var(--cyan)}.logo-dot{width:8px;height:8px;background:var(--cyan);border-radius:50%;display:inline-block;box-shadow:0 0 12px var(--cyan);animation:pulse 2s infinite}
+.nav-links{display:flex;align-items:center;gap:36px}
+.nav-links a{font-size:0.88rem;font-weight:500;letter-spacing:0.5px;color:var(--white-dim);position:relative;transition:color var(--transition);text-transform:uppercase}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--cyan);transition:width var(--transition)}
+.nav-links a:hover{color:var(--white)}.nav-links a:hover::after{width:100%}
+.nav-cta{background:transparent;border:1px solid var(--glass-border);color:var(--cyan)!important;padding:8px 20px;border-radius:50px;font-weight:600!important}
+.nav-cta::after{display:none!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--white);border-radius:2px;transition:var(--transition)}
+.mobile-menu{display:none;position:fixed;top:70px;left:0;right:0;background:var(--navy-2);border-bottom:1px solid var(--glass-border);padding:24px 5%;flex-direction:column;gap:20px;z-index:999}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:1rem;color:var(--white-dim);padding:8px 0;border-bottom:1px solid var(--white-faint)}
+
+/* HERO BANNER */
+.case-hero{padding:100px 5% 0;position:relative;z-index:1}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--white-dim);margin-bottom:32px}
+.breadcrumb a{color:var(--cyan);transition:color var(--transition)}.breadcrumb a:hover{color:var(--white)}.breadcrumb span{opacity:0.5}
+.case-banner{background:var(--glass);border:1px solid var(--glass-border);border-radius:24px;overflow:hidden}
+.case-banner-visual{height:320px;background:linear-gradient(135deg,var(--navy-3) 0%,var(--navy-4) 50%,#0a3060 100%);display:flex;align-items:center;justify-content:center;font-size:7rem;position:relative;overflow:hidden}
+.case-banner-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,229,255,0.1) 0%,transparent 70%)}
+.case-banner-body{padding:40px 48px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.case-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.case-tag{font-size:0.7rem;padding:4px 12px;background:var(--cyan-dim);border-radius:50px;color:var(--cyan);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border:1px solid var(--glass-border)}
+.case-title{font-family:var(--font-head);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;letter-spacing:-1px;line-height:1.2}
+.case-title span{color:var(--cyan)}
+.case-meta{display:flex;flex-direction:column;gap:12px;min-width:220px}
+.meta-row{display:flex;align-items:center;gap:10px;font-size:0.82rem}
+.meta-label{color:var(--white-dim);min-width:80px}
+.meta-value{font-weight:600;color:var(--white)}
+
+/* METRICS ROW */
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:40px 5%;position:relative;z-index:1}
+.metric-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:24px;text-align:center;transition:var(--transition)}
+.metric-card:hover{border-color:var(--cyan-dim);box-shadow:var(--shadow-cyan)}
+.metric-value{font-family:var(--font-head);font-size:2rem;font-weight:800;color:var(--cyan)}
+.metric-label{font-size:0.75rem;color:var(--white-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:6px}
+
+/* CONTENT */
+.case-content{padding:0 5% 80px;position:relative;z-index:1}
+.case-grid{display:grid;grid-template-columns:1fr 320px;gap:48px;align-items:start}
+.case-main{}
+.case-section{margin-bottom:48px}
+.section-label{display:flex;align-items:center;gap:12px;font-size:0.78rem;text-transform:uppercase;letter-spacing:2px;color:var(--cyan);font-weight:600;margin-bottom:12px}
+.section-label::before{content:'';width:32px;height:1px;background:var(--cyan)}
+.case-section h2{font-family:var(--font-head);font-size:1.5rem;font-weight:700;letter-spacing:-0.5px;margin-bottom:16px}
+.case-section h2 span{color:var(--cyan)}
+.prose{font-size:0.93rem;color:var(--white-dim);line-height:1.9;margin-bottom:14px}
+.highlight-box{background:var(--glass);border:1px solid var(--glass-border);border-left:3px solid var(--cyan);border-radius:var(--radius-sm);padding:20px 24px;margin:20px 0}
+.highlight-box p{font-size:0.88rem;color:var(--white-dim);line-height:1.7;font-style:italic}
+.steps-list{display:flex;flex-direction:column;gap:16px;margin-top:16px}
+.step-item{display:flex;gap:16px;align-items:flex-start}
+.step-num{width:32px;height:32px;background:var(--cyan-dim);border:1px solid var(--glass-border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;color:var(--cyan);flex-shrink:0;margin-top:2px}
+.step-content{font-size:0.88rem;color:var(--white-dim);line-height:1.7}
+.step-content strong{color:var(--white);font-weight:600}
+.viz-gallery{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.viz-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:2.5rem;transition:var(--transition);cursor:pointer}
+.viz-card:hover{border-color:var(--cyan-dim);box-shadow:var(--shadow-cyan)}
+.viz-card span{font-size:0.78rem;color:var(--white-dim);font-weight:500}
+.insight-list{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.insight-item{display:flex;align-items:flex-start;gap:12px;padding:16px 20px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm)}
+.insight-dot{width:8px;height:8px;background:var(--cyan);border-radius:50%;flex-shrink:0;margin-top:6px;box-shadow:0 0 8px var(--cyan)}
+.insight-text{font-size:0.85rem;color:var(--white-dim);line-height:1.7}
+.insight-text strong{color:var(--white)}
+
+/* SIDEBAR */
+.case-sidebar{display:flex;flex-direction:column;gap:20px;position:sticky;top:90px}
+.sidebar-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:24px}
+.sidebar-card h4{font-family:var(--font-head);font-size:0.88rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;color:var(--cyan)}
+.tool-chips{display:flex;flex-wrap:wrap;gap:8px}
+.tool-chip{padding:6px 14px;background:var(--cyan-dim);border:1px solid var(--glass-border);border-radius:50px;font-size:0.75rem;font-weight:600;color:var(--accent)}
+.info-list{display:flex;flex-direction:column;gap:10px}
+.info-row{display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;border-bottom:1px solid var(--white-faint);padding-bottom:8px}
+.info-row:last-child{border:none}
+.info-key{color:var(--white-dim)}.info-val{font-weight:600}
+
+/* NEXT/PREV */
+.case-nav{padding:0 5% 80px;position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.case-nav-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:24px 28px;display:flex;align-items:center;gap:16px;transition:var(--transition);cursor:pointer}
+.case-nav-card:hover{border-color:var(--cyan-dim);transform:translateY(-4px)}
+.case-nav-card.next{justify-content:flex-end;text-align:right}
+.nav-arrow{font-size:1.5rem;color:var(--cyan)}
+.nav-dir{font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--white-dim);margin-bottom:4px}
+.nav-title{font-family:var(--font-head);font-size:0.95rem;font-weight:700}
+
+/* CTA */
+.cta-section{padding:0 5% 100px;position:relative;z-index:1;text-align:center}
+.cta-inner{max-width:700px;margin:0 auto;background:var(--glass);border:1px solid var(--glass-border);border-radius:24px;padding:64px 48px;position:relative;overflow:hidden}
+.cta-inner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,229,255,0.08) 0%,transparent 70%);pointer-events:none}
+.cta-inner h2{font-family:var(--font-head);font-size:2rem;font-weight:800;letter-spacing:-1px;margin-bottom:16px}
+.cta-inner p{font-size:0.9rem;color:var(--white-dim);margin-bottom:32px;line-height:1.8}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:var(--navy);font-family:var(--font-head);font-weight:700;font-size:0.88rem;padding:13px 28px;border-radius:50px;transition:var(--transition);text-transform:uppercase}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--cyan-glow)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--white);font-family:var(--font-head);font-weight:600;font-size:0.88rem;padding:13px 28px;border-radius:50px;border:1px solid var(--glass-border);transition:var(--transition);text-transform:uppercase}
+.btn-secondary:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+
+footer{background:var(--navy-2);border-top:1px solid var(--glass-border);padding:60px 5% 32px;position:relative;z-index:1}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-brand p{font-size:0.85rem;color:var(--white-dim);line-height:1.8;margin-top:16px;max-width:280px}
+.footer-social{display:flex;gap:12px;margin-top:20px}
+.social-btn{width:38px;height:38px;background:var(--glass);border:1px solid var(--glass-border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:var(--transition);color:var(--white-dim)}
+.social-btn:hover{background:var(--cyan);color:var(--navy);border-color:var(--cyan)}
+.footer-col h4{font-family:var(--font-head);font-size:0.9rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px}
+.footer-col ul{display:flex;flex-direction:column;gap:10px}
+.footer-col ul li a{font-size:0.83rem;color:var(--white-dim);transition:color var(--transition)}
+.footer-col ul li a:hover{color:var(--cyan)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:32px;border-top:1px solid var(--white-faint);font-size:0.8rem;color:var(--white-dim)}
+.back-to-top{display:inline-flex;align-items:center;gap:6px;background:var(--glass);border:1px solid var(--glass-border);border-radius:50px;padding:8px 16px;font-size:0.78rem;color:var(--white-dim);cursor:pointer;transition:var(--transition)}
+.back-to-top:hover{color:var(--cyan);border-color:var(--cyan)}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+@media(max-width:1024px){.case-grid{grid-template-columns:1fr}.case-sidebar{position:static}.metrics-row{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.nav-links{display:none}.hamburger{display:flex}.case-banner-body{flex-direction:column}.viz-gallery{grid-template-columns:1fr}.case-nav{grid-template-columns:1fr}.cta-inner{padding:40px 24px}.footer-bottom{flex-direction:column;gap:16px;text-align:center}}
+</style>
+</head>
+<body>
+<div class="bg-gradient"></div>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo"><span class="logo-dot"></span>Data<span>Mind</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+    <li><a href="projects.html" class="active">Projects</a></li><li><a href="services.html">Services</a></li>
+    <li><a href="contact.html" class="nav-cta">Hire Me</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="projects.html">Projects</a><a href="services.html">Services</a><a href="contact.html">Contact</a>
+</div>
+
+<!-- CASE HERO -->
+<section class="case-hero">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span>/</span>
+    <a href="projects.html">Projects</a><span>/</span>
+    <span style="color:var(--white)">Sales Intelligence Dashboard</span>
+  </div>
+  <div class="case-banner reveal">
+    <div class="case-banner-visual">📊</div>
+    <div class="case-banner-body">
+      <div>
+        <div class="case-tags">
+          <span class="case-tag">Power BI</span><span class="case-tag">SQL</span>
+          <span class="case-tag">DAX</span><span class="case-tag">Business Intelligence</span>
+        </div>
+        <div class="case-title">Enterprise Sales <span>Intelligence</span> Dashboard</div>
+      </div>
+      <div class="case-meta">
+        <div class="meta-row"><span class="meta-label">Client</span><span class="meta-value">TechVentures Co.</span></div>
+        <div class="meta-row"><span class="meta-label">Timeline</span><span class="meta-value">8 weeks</span></div>
+        <div class="meta-row"><span class="meta-label">Role</span><span class="meta-value">Lead Analyst</span></div>
+        <div class="meta-row"><span class="meta-label">Year</span><span class="meta-value">2024</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<div class="metrics-row">
+  <div class="metric-card reveal"><div class="metric-value">$12M</div><div class="metric-label">Revenue Tracked</div></div>
+  <div class="metric-card reveal" style="transition-delay:0.1s"><div class="metric-value">18%</div><div class="metric-label">Efficiency Gain</div></div>
+  <div class="metric-card reveal" style="transition-delay:0.2s"><div class="metric-value">15h</div><div class="metric-label">Saved Per Week</div></div>
+  <div class="metric-card reveal" style="transition-delay:0.3s"><div class="metric-value">200+</div><div class="metric-label">Users Served</div></div>
+</div>
+
+<!-- CASE CONTENT -->
+<section class="case-content">
+  <div class="case-grid">
+    <div class="case-main">
+
+      <div class="case-section reveal">
+        <div class="section-label">Context</div>
+        <h2>The <span>Problem</span></h2>
+        <p class="prose">TechVentures Co. was managing $12M in annual revenue across 5 sales regions, 4 product lines, and a team of 200+ sales representatives — but had no unified visibility into performance. Data lived in three disconnected CRMs, multiple Excel spreadsheets updated manually each week, and email reports that were often 48 hours out of date.</p>
+        <p class="prose">Sales managers spent 15+ hours per week just gathering and cleaning data. By the time insights reached leadership, markets had already moved. Revenue leakage was happening in plain sight, but no one had the tools to see it.</p>
+        <div class="highlight-box">
+          <p>"We knew we were leaving money on the table — we just couldn't see exactly where. The manual reporting process was our biggest bottleneck to growth." — VP Sales, TechVentures Co.</p>
+        </div>
+      </div>
+
+      <div class="case-section reveal" style="transition-delay:0.1s">
+        <div class="section-label">Goals</div>
+        <h2>Project <span>Objectives</span></h2>
+        <div class="insight-list">
+          <div class="insight-item"><div class="insight-dot"></div><div class="insight-text"><strong>Unified data platform:</strong> Consolidate 3 CRM systems and 12 Excel sources into a single, reliable source of truth.</div></div>
+          <div class="insight-item"><div class="insight-dot"></div><div class="insight-text"><strong>Real-time visibility:</strong> Enable live KPI monitoring with &lt;2 hour data refresh for leadership and regional managers.</div></div>
+          <div class="insight-item"><div class="insight-dot"></div><div class="insight-text"><strong>Self-service analytics:</strong> Empower 200+ non-technical sales reps to explore their own performance data without analyst support.</div></div>
+          <div class="insight-item"><div class="insight-dot"></div><div class="insight-text"><strong>Anomaly detection:</strong> Automatically surface underperforming regions, products, and reps before they impact quarterly targets.</div></div>
+        </div>
+      </div>
+
+      <div class="case-section reveal" style="transition-delay:0.1s">
+        <div class="section-label">Approach</div>
+        <h2>Methodology &amp; <span>Process</span></h2>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-num">1</div><div class="step-content"><strong>Discovery & Data Audit (Week 1–2)</strong><br>Conducted stakeholder interviews with VP Sales, 3 regional managers, and 5 sales reps. Mapped all data sources, identified 47 data quality issues, and defined 22 core KPIs.</div></div>
+          <div class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Data Engineering & Cleaning (Week 3–4)</strong><br>Built SQL-based ETL pipelines to consolidate CRM data. Resolved duplicates, standardized naming conventions, and created a clean star schema data warehouse optimized for reporting.</div></div>
+          <div class="step-item"><div class="step-num">3</div><div class="step-content"><strong>Dashboard Design & Build (Week 5–6)</strong><br>Designed and built 6 interconnected Power BI dashboard views using advanced DAX measures. Implemented role-level security so each rep sees only their data, while managers see full regions.</div></div>
+          <div class="step-item"><div class="step-num">4</div><div class="step-content"><strong>Testing, Training & Rollout (Week 7–8)</strong><br>Conducted UAT with 20 users, incorporated feedback, and delivered training workshops for 3 manager groups. Documented data dictionary and maintenance runbook.</div></div>
+        </div>
+      </div>
+
+      <div class="case-section reveal">
+        <div class="section-label">Visuals</div>
+        <h2>Dashboard <span>Gallery</span></h2>
+        <div class="viz-gallery">
+          <div class="viz-card">📊<span>Executive Overview</span></div>
+          <div class="viz-card">🗺️<span>Regional Performance Map</span></div>
+          <div class="viz-card">📈<span>Revenue Trend Analysis</span></div>
+          <div class="viz-card">👥<span>Sales Rep Leaderboard</span></div>
+        </div>
+      </div>
+
+      <div class="case-section reveal">
+        <div class="section-label">Outcomes</div>
+        <h2>Results &amp; <span>Business Impact</span></h2>
+        <div class="insight-list">
+          <div class="insight-item"><div class="insight-dot"></div><div class="insight-text"><strong>$800K revenue opportunity uncovered</strong> in the Southwest region from an undetected pricing discrepancy affecting 340 accounts.</div></div>
+          <div class="insight-item"><div class="insight-dot"></div><div class="insight-text"><strong>15 hours/week saved per manager</strong> — equivalent to nearly 2 full working days returned to strategic selling activities.</div></div>
+          <div class="insight-item"><div class="insight-dot"></div><div class="insight-text"><strong>18% improvement in forecast accuracy</strong> compared to prior quarter using the new predictive trend layer.</div></div>
+          <div class="insight-item"><div class="insight-dot"></div><div class="insight-text"><strong>200+ users onboarded</strong> with 87% weekly active usage rate at 3-month mark — exceptionally high for enterprise BI tools.</div></div>
+        </div>
+      </div>
+
+      <div class="case-section reveal">
+        <div class="section-label">Reflection</div>
+        <h2>Challenges &amp; <span>Lessons Learned</span></h2>
+        <p class="prose">The biggest challenge was data quality — the three CRM systems used different account ID formats, making joins unreliable. We solved this with a fuzzy-matching algorithm that correctly linked 94.7% of records automatically, with a human review queue for the remaining 5.3%.</p>
+        <p class="prose">The adoption lesson was profound: technical quality alone doesn't drive adoption. Investing in co-design sessions with actual end-users in week 1 was the single best decision we made. The dashboard we built looks very different from what we'd have designed in isolation — and it's used every single day.</p>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="case-sidebar">
+      <div class="sidebar-card reveal">
+        <h4>Tools Used</h4>
+        <div class="tool-chips">
+          <span class="tool-chip">Power BI</span><span class="tool-chip">SQL Server</span>
+          <span class="tool-chip">DAX</span><span class="tool-chip">Power Query</span>
+          <span class="tool-chip">Azure Data Factory</span><span class="tool-chip">Excel</span>
+        </div>
+      </div>
+      <div class="sidebar-card reveal" style="transition-delay:0.1s">
+        <h4>Project Info</h4>
+        <div class="info-list">
+          <div class="info-row"><span class="info-key">Industry</span><span class="info-val">SaaS / Tech</span></div>
+          <div class="info-row"><span class="info-key">Duration</span><span class="info-val">8 weeks</span></div>
+          <div class="info-row"><span class="info-key">Team Size</span><span class="info-val">Solo</span></div>
+          <div class="info-row"><span class="info-key">Data Sources</span><span class="info-val">15</span></div>
+          <div class="info-row"><span class="info-key">Dashboard Views</span><span class="info-val">6</span></div>
+          <div class="info-row"><span class="info-key">End Users</span><span class="info-val">200+</span></div>
+        </div>
+      </div>
+      <div class="sidebar-card reveal" style="transition-delay:0.2s">
+        <h4>Need something similar?</h4>
+        <p style="font-size:0.82rem;color:var(--white-dim);line-height:1.7;margin-bottom:16px">I build enterprise-grade BI dashboards tailored to your exact business needs. Let's talk.</p>
+        <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:var(--navy);font-family:var(--font-head);font-weight:700;font-size:0.82rem;padding:11px 20px;border-radius:50px;width:100%;justify-content:center;text-transform:uppercase;transition:var(--transition)">Hire Me →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT / PREV -->
+<div class="case-nav">
+  <a href="projects.html" class="case-nav-card reveal">
+    <div class="nav-arrow">←</div>
+    <div><div class="nav-dir">Back to</div><div class="nav-title">All Projects</div></div>
+  </a>
+  <a href="projects.html" class="case-nav-card next reveal" style="transition-delay:0.1s">
+    <div><div class="nav-dir">Next Project</div><div class="nav-title">Customer Churn Prediction</div></div>
+    <div class="nav-arrow">→</div>
+  </a>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <h2>Like what you see? Let's build <span style="color:var(--cyan)">yours.</span></h2>
+    <p>Every dataset has a story. Let me help you find yours and turn it into decisions that drive growth.</p>
+    <div class="cta-btns">
+      <a href="contact.html" class="btn-primary">Start a Project</a>
+      <a href="projects.html" class="btn-secondary">More Case Studies</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="nav-logo"><span class="logo-dot"></span>Data<span style="color:var(--cyan)">Mind</span></div><p>Turning data chaos into strategic clarity.</p><div class="footer-social"><a class="social-btn" href="#">in</a><a class="social-btn" href="#">⌥</a><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">✉</a></div></div>
+    <div class="footer-col"><h4>Navigation</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="projects.html">Projects</a></li><li><a href="services.html">Services</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Services</h4><ul><li><a href="services.html">Data Cleaning</a></li><li><a href="services.html">Business Intelligence</a></li><li><a href="services.html">Predictive Analytics</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="mailto:alex@datamind.io">alex@datamind.io</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">GitHub</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 DataMind — Alex Rivera. All rights reserved.</span><a class="back-to-top" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>Back to Top</a></div>
+</footer>
+
+<script>
+const hamburger=document.getElementById('hamburger'),mobileMenu=document.getElementById('mobileMenu');
+hamburger.addEventListener('click',()=>{hamburger.classList.toggle('open');mobileMenu.classList.toggle('open')});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+</script>
+</body>
+</html>

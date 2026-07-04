@@ -1,0 +1,59 @@
+/* Basic styles for project5 */
+:root{--accent:#007acc;--bg:#f9f9f9;--text:#222}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial, sans-serif;color:var(--text);background:var(--bg);line-height:1.6}
+.container{max-width:1000px;margin:0 auto;padding:1rem}
+header{background:#fff;border-bottom:1px solid #e6e6e6}
+.site-title{margin:0;padding:1rem;font-size:1.25rem;color:var(--accent)}
+nav{display:flex;gap:1rem;padding:0 1rem 1rem}
+a{color:inherit;text-decoration:none}
+a.primary{color:var(--accent)}
+button.nav-toggle{display:none}
+@media(max-width:700px){nav{display:none}button.nav-toggle{display:block}}
+main{padding:1rem}
+footer{padding:1rem;text-align:center;font-size:.9rem;color:#666}
+h1,h2,h3{color:#111;margin-top:0}
+img{max-width:100%;height:auto;display:block}
+
+/* Consolidated styles from project5 HTML files */
+
+/* ===== index.html styles ===== */
+/* (condensed) */
+header{position:fixed;top:0;width:100%;background:linear-gradient(135deg,#003366 0%,#006699 100%);color:#fff;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+nav{display:flex;justify-content:space-between;align-items:center;padding:0.8rem 2rem;max-width:1400px;margin:0 auto;width:100%}
+.logo{font-size:1.5rem;font-weight:700;letter-spacing:1px}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--light-text, #fff);text-decoration:none;font-weight:500;transition:color .3s,padding .3s;border-bottom:2px solid transparent;padding:0.5rem 0}
+.nav-links a:hover,.nav-links a.active{color:var(--accent,#00a3cc);border-bottom-color:var(--accent,#00a3cc)}
+.menu-toggle{display:none;flex-direction:column;cursor:pointer;background:none;border:none}
+.menu-toggle span{width:25px;height:3px;background:var(--light-text,#fff);margin:5px 0}
+.hero{margin-top:60px;min-height:calc(100vh - 60px);background:linear-gradient(135deg,rgba(0,51,102,.85)0%,rgba(0,102,153,.85)100%),url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&h=600&fit=crop') center/cover;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--light-text,#fff);position:relative;overflow:hidden}
+.hero-content{position:relative;z-index:2;max-width:700px;padding:2rem}
+.hero-tag{display:inline-block;background:rgba(0,163,204,.3);border:1px solid var(--accent,#00a3cc);padding:.6rem 1.2rem;border-radius:50px;font-size:.9rem;font-weight:600;margin-bottom:1rem;text-transform:uppercase;letter-spacing:1px}
+
+/* ===== common responsive ===== */
+@media(max-width:768px){.nav-links{display:none;position:absolute;top:60px;left:0;right:0;background:#003366;flex-direction:column;gap:0;padding:1rem 0}.nav-links.active{display:flex}.nav-links a{padding:.8rem 1.5rem;border:none;border-bottom:1px solid rgba(255,255,255,.1)}.menu-toggle{display:flex}} 
+
+/* ===== gallery styles (condensed) ===== */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem}
+.gallery-item{position:relative;overflow:hidden;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.1);cursor:pointer;background:#ddd;aspect-ratio:1;transition:all .3s}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.gallery-item:hover img{transform:scale(1.1)}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,51,102,.6)0%,rgba(0,163,204,.6)100%);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.gallery-item:hover .gallery-overlay{opacity:1}
+
+/* ===== contact form condensed ===== */
+.contact-container{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.contact-info{background:#003366;color:#fff;padding:2.5rem;border-radius:12px;box-shadow:0 8px 25px rgba(0,0,0,.15)}
+.contact-form{background:#fff;padding:2.5rem;border-radius:12px;box-shadow:0 8px 25px rgba(0,0,0,.1)}
+
+/* ===== partners/services condensed ===== */
+.partner-grid,.service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin-bottom:2rem}
+.partner-card,.service-card{background:#fff;border-radius:12px;padding:2rem;box-shadow:0 4px 15px rgba(0,0,0,.1)}
+
+/* small utilities */
+.container{max-width:1000px;margin:0 auto;padding:1rem}
+main{padding:1rem}
+footer{padding:1rem;text-align:center;font-size:.9rem;color:#666}
+
+/* End consolidated styles */
